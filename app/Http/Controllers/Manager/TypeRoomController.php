@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Manager;
 
 use App\Models\TypeRoom;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTypeRoomRequest;
 use App\Http\Requests\UpdateTypeRoomRequest;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Validation\ValidationException;
 
 class TypeRoomController extends Controller
 {
@@ -107,9 +108,11 @@ class TypeRoomController extends Controller
                 'status' => 'required',
             ]);
             // dd($data);
-            $this->type_rooms->update_type_room($typeRoom->id, $data);
-            // dd($data);
-            return redirect()->back()->with('success', 'Sửa loại phòng thành công!');
+            if ($this->type_rooms->update_type_room($typeRoom->id, $data)) {
+                return redirect()->back()->with('success', 'Sửa loại phòng thành công!');
+            } else {
+                return redirect()->back()->with('error', 'Đang có phòng liên kết không thể khóa');
+            }
         } catch (ValidationException $e) {
             $message = $e->errors();
             return redirect()->back()

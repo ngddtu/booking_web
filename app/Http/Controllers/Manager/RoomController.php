@@ -30,7 +30,7 @@ class RoomController extends Controller
         $roomTypes = $this->roomType->getTypeRoom();
         // dd($roomTypes);
         $rooms  = $this->room->filterRooms($request->all());
-                // dd($rooms);
+        // dd($rooms);
         // $status = $this->room->getStatusLabelAttribute($rooms->status);
         // dd($status);
         $title = 'Tổng quan hệ thống';
@@ -40,10 +40,7 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -56,12 +53,11 @@ class RoomController extends Controller
                 'room_number' => 'required|string|max:100|unique:rooms,room_number',
                 'status' => 'required',
                 'room_type_id' => 'required'
-                
+
             ]);
             $this->room->store_new_room($data);
             return redirect()->back()->with('success', 'Thêm loại phòng thành công!');
         } catch (ValidationException $e) {
-            $message = $e->errors();
             $message = $e->errors();
             return redirect()->back()
                 ->with('error', 'Thêm loại phòng không thành công!')
@@ -89,9 +85,26 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoomRequest $request, Room $room)
+    public function update(Request $request, Room $room)
     {
-        //
+        // dd($request->all());
+        try {
+            $data = $request->validate([
+                'room_number' => 'required|string|max:100|unique:rooms,room_number,' . $room->id,
+                'status' => 'required',
+                'type_room_id' => 'required'
+            ]);
+
+            
+            $this->room->update_room($room->id,$data);
+            return redirect()->back()->with('success', 'Sửa phòng thành công!');
+        } catch (ValidationException $e) {
+            $message = $e->errors();
+            return redirect()->back()
+                ->with('error', 'Sửa phòng không thành công!')
+                ->withErrors($message) // truyền lỗi từng field
+                ->withInput();
+        }
     }
 
     /**

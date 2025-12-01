@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('room_types', function (Blueprint $table) {
-            // $table->dropColumn('price');
-            // $table->integer('max_people');
+            $table->dropColumn('price');
+            $table->integer('max_people');
             // $table->integer('type');
-            // $table->decimal('initial_hour_rate', 10, 2);
-            // $table->decimal('overnight_rate', 10, 2);
-            // $table->decimal('daily_rate', 10, 2);
-            // $table->decimal('late_checkout_fee_value', 10, 2)->default(0);
+            $table->decimal('initial_hour_rate', 10, 2);
+            $table->decimal('overnight_rate', 10, 2);
+            $table->decimal('daily_rate', 10, 2);
+            $table->decimal('late_checkout_fee_value', 10, 2)->default(0);
         });
     }
 

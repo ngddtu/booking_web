@@ -173,7 +173,7 @@
                 onclick="switchView('manage-room-types', this)">
                 <i class="fas fa-shapes me-2 text-center" style="width:20px"></i> QL Loại phòng
             </a>
-            <a href="#" class="nav-link" onclick="switchView('manage-services', this)">
+            <a href="{{ route('room.manage-services') }}" class="nav-link" onclick="switchView('manage-services', this)">
                 <i class="fas fa-coffee me-2 text-center" style="width:20px"></i> Quản lý Dịch vụ
             </a>
             <a href="#" class="nav-link" onclick="switchView('manage-users', this)">

@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Manager\RoomController;
-use App\Http\Controllers\TypeRoomController;
+use App\Http\Controllers\Manager\TypeRoomController;
+use App\Http\Controllers\Manager\RoomServiceController;
 
 Route::get('/', [HomeController::class, 'index'])->name('login');
 
@@ -25,7 +26,8 @@ Route::prefix('room')->name('room.')->group(function () {
     Route::post('manage-room', [RoomController::class, 'index'])->name('manage-room');
     //thêm phòng
     Route::post('manage-room/store', [RoomController::class, 'store'])->name('manage-room.store')->middleware('auth');
-
+    //handle sửa phòng
+    Route::put('manage-room/update/{room}', [RoomController::class, 'update'])->name('manage-type-room.update');
 
 
 
@@ -39,4 +41,10 @@ Route::prefix('room')->name('room.')->group(function () {
 
     //handle sửa loại phòng
     Route::put('manage-type-room/update/{typeRoom}', [TypeRoomController::class, 'update'])->name('manage-type-room.update')->middleware('auth');
+
+    // Quản lý dịch vụ
+    Route::get('manage-services', [RoomServiceController::class, 'index'])->name('manage-services');
+    Route::post('manage-services/store', [RoomServiceController::class, 'store'])->name('manage-services.store')->middleware('auth');
+    Route::put('manage-services/update/{roomService}', [RoomServiceController::class, 'update'])->name('manage-services.update')->middleware('auth');
+    Route::delete('manage-services/destroy/{roomService}', [RoomServiceController::class, 'destroy'])->name('manage-services.destroy')->middleware('auth');
 });

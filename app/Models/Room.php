@@ -63,6 +63,17 @@ class Room extends Model
         };
     }
 
+
+    public function update_room($id, array $data)
+    {
+        $room = $this->find($id);
+        // if($this->rooms()->count() > 0){
+        //     return 'Đang có phòng liên kết';
+        // }
+        $room->update($data);
+    }
+
+    
     public function typeRoom()
     {
         return $this->belongsTo(TypeRoom::class, 'room_type_id');

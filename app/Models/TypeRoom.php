@@ -51,15 +51,18 @@ class TypeRoom extends Model
     public function update_type_room($id, array $data)
     {
         $typeRoom = $this->find($id);
-        if($this->rooms()->count() > 0){
-            return 'Đang có phòng liên kết';
+        if($typeRoom->rooms()->count() > 0){
+            return false;
+        } else {
+            $typeRoom->update($data);
+            return true;
         }
-        $typeRoom->update($data);
+        
     }
 
     //hàm lấy loại phòng
     public function getTypeRoom() {
-        $typeRoom = $this->get();
+        $typeRoom = $this->where('status','available')->get();
         return $typeRoom;
     }
     public function rooms()

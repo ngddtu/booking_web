@@ -99,7 +99,7 @@
                                 @if ($room->status != 'occupied')
                                     <button onclick="openEditRoomModal({{ $room->id }})"
                                         class="btn btn-sm btn-outline-info"><i class="fas fa-pen"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    {{-- <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button> --}}
                                 @endif
                             </td>
                         </tr>
@@ -238,8 +238,8 @@
                             <label class="form-label fw-bold">Trạng thái</label>
                             <select name="status" id="edit_status" class="form-select">
                                 <option value="available">Sẵn sàng</option>
-                                <option value="booked">Đặt trước</option>
-                                <option value="occupied">Có khách</option>
+                                {{-- <option value="booked">Đặt trước</option> --}}
+                                {{-- <option value="occupied">Có khách</option> --}}
                                 <option value="maintenance">Đang bảo trì</option>
                                 <option value="cleaning">Đang dọn dẹp</option>
                                 <option value="disable">Bị khóa</option>
