@@ -120,8 +120,8 @@ class RoomController extends Controller
     public function manage_reserve(Request $request)
     {
         $rooms = $this->room->listWithActiveBooking($request->all());
-
-        // dd($rooms[2]->status);
+        // dd($rooms[3]);
+        dd($rooms[3]->activeBooking->booking_service->map(fn($bs)=> $bs->service->name));
         return view('saler.manage-booking', compact('rooms'));
     }
 }

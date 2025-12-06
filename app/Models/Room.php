@@ -85,6 +85,8 @@ class Room extends Model
                 $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out','status');
             }, 'activeBooking.customer' => function ($q) {
                 $q->select('id', 'name', 'phone', 'address');
+            }, 'activeBooking.booking_service.service' => function ($q) {
+                $q->select('id', 'name', 'price');
             }
         ]);
 

@@ -9,6 +9,6 @@
 </div>
 
 <div class="d-flex justify-content-between text-muted small mt-2 border-top pt-2">
-    <span><i class="fas fa-user-friends me-1"></i>Max: {{ $room->capacity ?? 2 }}</span>
+    <span><i class="fas fa-user-friends me-1"></i>Max: {{ $room->roomtype->max_people ?? 2 }}</span>
     <span class="text-success"><i class="fas fa-check-circle me-1"></i>Sạch sẽ</span>
 </div>
