@@ -89,11 +89,11 @@
                     @foreach ($rooms as $room)
                         <tr>
                             <td class="ps-3 fw-bold">{{ $room->room_number }}</td>
-                            <td>{{ $room->typeRoom->name }}</td>
-                            <td>{{ number_format($room->typeRoom->initial_hour_rate) }}</td>
-                            <td>{{ number_format($room->typeRoom->overnight_rate) }}</td>
-                            <td>{{ number_format($room->typeRoom->daily_rate) }}</td>
-                            <td>{{ number_format($room->typeRoom->late_checkout_fee_value) }}</td>
+                            <td>{{ $room->roomType->name }}</td>
+                            <td>{{ number_format($room->roomType->initial_hour_rate) }}</td>
+                            <td>{{ number_format($room->roomType->overnight_rate) }}</td>
+                            <td>{{ number_format($room->roomType->daily_rate) }}</td>
+                            <td>{{ number_format($room->roomType->late_checkout_fee_value) }}</td>
                             <td><span class="badge bg-{{ $room->status_badge }}">{{ $room->status_label }}</span></td>
                             <td class="text-end pe-3">
                                 @if ($room->status != 'occupied')
@@ -269,8 +269,8 @@
             const data = rooms[id];
             document.getElementById('editRoomForm').action = `/room/manage-room/update/${data.id}`;
             document.getElementById('edit_room_number').value = data.room_number;
-            document.getElementById('edit_type_room_id').value = data.type_room.id;
-            console.log(data.type_room.name);
+            document.getElementById('edit_type_room_id').value = data.room_type.id;
+            console.log(data.room_type.name);
 
             document.getElementById('edit_status').value = data.status;
 

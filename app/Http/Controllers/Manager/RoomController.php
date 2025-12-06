@@ -95,8 +95,8 @@ class RoomController extends Controller
                 'type_room_id' => 'required'
             ]);
 
-            
-            $this->room->update_room($room->id,$data);
+
+            $this->room->update_room($room->id, $data);
             return redirect()->back()->with('success', 'Sửa phòng thành công!');
         } catch (ValidationException $e) {
             $message = $e->errors();
@@ -113,5 +113,15 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         //
+    }
+
+
+
+    public function manage_reserve(Request $request)
+    {
+        $rooms = $this->room->listWithActiveBooking($request->all());
+
+        // dd($rooms[2]->status);
+        return view('saler.manage-booking', compact('rooms'));
     }
 }

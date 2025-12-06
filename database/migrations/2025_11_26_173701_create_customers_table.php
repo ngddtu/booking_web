@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->string('email', 100)->unique();
+            $table->string('email', 100)->unique()->nullable();
             $table->string('phone', 20);
             $table->string('address', 255)->nullable();
             $table->timestamps();

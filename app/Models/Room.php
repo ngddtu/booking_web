@@ -16,9 +16,11 @@ class Room extends Model
         'status',
     ];
 
+
+    //lọc phòng
     public function filterRooms($filters)
     {
-        $query = $this->newQuery()->with('typeRoom');
+        $query = $this->newQuery()->with('roomType');
         if (!empty($filters['room_number'])) {
             $query->where('room_number', 'like', '%' . $filters['room_number'] . '%');
         }
@@ -52,7 +54,7 @@ class Room extends Model
 
     public function getStatusBadgeAttribute()
     {
-        return match ($this->status){
+        return match ($this->status) {
             'available'   => 'success',
             'booked'      => 'primary',
             'maintenance' => 'warning',
@@ -73,9 +75,44 @@ class Room extends Model
         $room->update($data);
     }
 
-    
-    public function typeRoom()
+
+    public static function listWithActiveBooking(array $filters = [])
+    {
+        // Bắt đầu query builder từ Room
+        $query = self::query()
+            ->with(['roomType:id,name,initial_hour_rate,overnight_rate,daily_rate'])
+            ->with(['activeBooking' => function ($q) {
+                $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out','status');
+            }, 'activeBooking.customer' => function ($q) {
+                $q->select('id', 'name', 'phone', 'address');
+            }
+        ]);
+
+        // filters: ví dụ room_number, status, type_room_id
+        if (!empty($filters['room_number'])) {
+            $query->where('room_number', 'like', '%' . $filters['room_number'] . '%');
+        }
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+        if (!empty($filters['type_room_id'])) {
+            $query->where('room_type_id', $filters['type_room_id']);
+        }
+
+        // phân trang hoặc get()
+        return $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
+    }
+    public function roomType()
     {
         return $this->belongsTo(TypeRoom::class, 'room_type_id');
+    }
+
+    public function booking(){
+        return $this->hasMany(Booking::class, 'room_id');
+    }
+
+    public function activeBooking()
+    {
+        return $this->hasOne(Booking::class, 'room_id')->whereIn('status', ['confirmed', 'pending']);
     }
 }

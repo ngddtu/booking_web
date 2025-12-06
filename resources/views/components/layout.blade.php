@@ -153,30 +153,29 @@
 
             <!-- SALE SECTION -->
             <div class="nav-header mt-2">Lễ Tân (Sale)</div>
-            <a href="#" class="nav-link " onclick="switchView('room-plan', this)">
+            <a href="{{ route('reserve.manage_reserve') }}" class="nav-link ">
                 <i class="fas fa-th me-2 text-center" style="width:20px"></i> Sơ đồ phòng
             </a>
             <a href="#" class="nav-link" onclick="switchView('bookings', this)">
                 <i class="fas fa-calendar-check me-2 text-center" style="width:20px"></i> DS Đặt phòng
             </a>
-            <a href="#" class="nav-link" onclick="switchView('customers', this)">
+            <a href="{{ route('customer.manage-customer') }}" class="nav-link" onclick="switchView('customers', this)">
                 <i class="fas fa-users me-2 text-center" style="width:20px"></i> Khách hàng
             </a>
 
             <!-- MANAGER SECTION -->
             <div class="nav-header mt-2">Quản Trị (Manager)</div>
-            <a href="{{ route('room.manage-room') }}" class="nav-link" onclick="switchView('manage-rooms', this)">
+            <a href="{{ route('room.manage-room') }}" class="nav-link">
                 <i class="fas fa-bed me-2 text-center" style="width:20px"></i> Quản lý Phòng
             </a>
             <!-- MỚI THÊM: Quản lý loại phòng -->
-            <a href="{{ route('room.manage-type-room') }}" class="nav-link"
-                onclick="switchView('manage-room-types', this)">
+            <a href="{{ route('room.manage-type-room') }}" class="nav-link">
                 <i class="fas fa-shapes me-2 text-center" style="width:20px"></i> QL Loại phòng
             </a>
-            <a href="{{ route('room.manage-services') }}" class="nav-link" onclick="switchView('manage-services', this)">
+            <a href="{{ route('room.manage-services') }}" class="nav-link">
                 <i class="fas fa-coffee me-2 text-center" style="width:20px"></i> Quản lý Dịch vụ
             </a>
-            <a href="#" class="nav-link" onclick="switchView('manage-users', this)">
+            <a href="#" class="nav-link">
                 <i class="fas fa-user-cog me-2 text-center" style="width:20px"></i> Nhân viên
             </a>
         </nav>

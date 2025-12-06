@@ -9,6 +9,8 @@ class TypeRoom extends Model
 {
     /** @use HasFactory<\Database\Factories\TypeRoomFactory> */
     use HasFactory;
+
+
     protected $table = 'room_types';
 
     protected $fillable = [
@@ -49,16 +51,27 @@ class TypeRoom extends Model
     }
 
     public function update_type_room($id, array $data)
-    {
-        $typeRoom = $this->find($id);
-        if($typeRoom->rooms()->count() > 0){
-            return false;
-        } else {
-            $typeRoom->update($data);
-            return true;
-        }
-        
+{
+    $typeRoom = $this->find($id);
+
+    $oldStatus = $typeRoom->status;
+
+    $typeRoom->update($data);
+
+    $newStatus = $data['status'] ?? $oldStatus;
+
+    // Nếu chuyển từ available -> locked
+    if($oldStatus === 'available' && $newStatus === 'disable') {
+
+        // update các phòng không occupied
+        $typeRoom->rooms()
+            ->whereNotIn('status', ['occupied'])
+            ->update(['status' => 'disable']);
     }
+
+    return true;
+}
+
 
     //hàm lấy loại phòng
     public function getTypeRoom() {
