@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone', 20);
             $table->integer('role')->default('0'); // admin, staff
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

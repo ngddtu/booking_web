@@ -10,7 +10,12 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 100);
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('initial_hour_rate', 10, 2);
+            $table->decimal('overnight_rate', 10, 2);
+            $table->decimal('daily_rate', 10, 2);
+            $table->decimal('late_checkout_fee_value', 10, 2)->default(0);
+            $table->integer('max_people');
+            $table->enum('status', ['available', 'disable'])->default('available');
             $table->timestamps();
         });
     }

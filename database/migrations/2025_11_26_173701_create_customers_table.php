@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('email', 100)->unique()->nullable();
             $table->string('phone', 20);
             $table->string('address', 255)->nullable();
+            $table->enum('status', ['active', 'locked'])->default('active');
             $table->timestamps();
         });
     }
