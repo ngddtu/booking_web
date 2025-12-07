@@ -1,18 +1,27 @@
 {{-- resources/views/components/room-partials/occupied.blade.php --}}
 
 @php
-    // Lấy booking từ relation đã load sẵn
-    $booking = $room->activeBooking;
+    // // Lấy booking từ relation đã load sẵn
+    // $booking = $room->activeBooking;
 
-    // Tính toán hiển thị (Có thể dùng Accessor trong Model để gọn hơn)
-    $roomPrice = $booking->total_price ?? 0;
-    $servicePrice = $booking->booking ?? 0;
-    $total = $roomPrice + $servicePrice;
+    // // Tính toán hiển thị (Có thể dùng Accessor trong Model để gọn hơn)
+    // $roomPrice = $booking->total_price ?? 0;
+    // $services = $booking->booking_service->map(fn($bs)=> [
+    //     'name' => $bs->service->name,
+    //     'price' => $bs->service->price
+    // ]);
+    // // echo '<pre>';
+    // // print_r($services);
+    // $servicePrice = $services->sum(fn($item) => $item['price']);
+    // $total = $roomPrice + $servicePrice;
+    $roomPrice = $room->activeBooking->total_price ?? 0;
+    $servicePrice = $room->service_price;
+    $total = $room->total_price;
 @endphp
 
 <!-- Khu vực hiển thị tiền (Click vào để thêm dịch vụ) -->
 <div class="bg-white rounded p-2 mb-2 border border-danger border-opacity-25 shadow-sm cursor-pointer"
-    onclick="openModal('addServiceModal', '{{ $room->id }}')" title="Bấm để thêm dịch vụ">
+    onclick="openModalService({{ $room->id }})" title="Bấm để thêm dịch vụ">
 
     <div class="d-flex justify-content-between align-items-center mb-1">
         <small class="text-muted">Tiền phòng:</small>
@@ -34,7 +43,7 @@
 <div class="row g-1">
     <div class="col-6">
         <button class="btn btn-outline-primary w-100 btn-sm p-1"
-            onclick="openModal('addServiceModal', '{{ $room->number }}')" title="Thêm dịch vụ">
+            onclick="openModalService({{ $room->id }})" title="Thêm dịch vụ">
             <i class="fas fa-cart-plus"></i> <small>Menu</small>
         </button>
     </div>

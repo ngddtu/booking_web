@@ -121,187 +121,6 @@
             </div>
         </div>
 
-        <!-- 3. ROOM GRID (LƯỚI PHÒNG) -->
-        {{-- <div class="row g-3" id="roomGrid">
-
-            <!-- MẪU 1: PHÒNG TRỐNG (AVAILABLE) - Sẵn sàng bán -->
-            <div class="col-xl-3 col-lg-4 col-md-6 room-item" data-room="101" data-type="Đơn" data-status="available"
-                data-floor="1">
-                <div class="card room-card h-100 shadow-sm border-0 border-top border-4 border-success">
-                    <div class="card-body position-relative">
-                        <!-- Dropdown Action -->
-                        <div class="dropdown position-absolute top-0 end-0 mt-2 me-2">
-                            <button class="btn btn-sm btn-link text-secondary p-0" data-bs-toggle="dropdown"><i
-                                    class="fas fa-ellipsis-v"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><a class="dropdown-item" href="#" onclick="openModal('checkinModal', '101')"><i
-                                            class="fas fa-check text-success me-2"></i>Check-in ngay</a></li>
-                                <li><a class="dropdown-item" href="#"><i
-                                            class="fas fa-wrench text-secondary me-2"></i>Báo bảo trì</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle me-2"></i>Xem
-                                        chi tiết</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-success text-white rounded-3 d-flex align-items-center justify-content-center me-3 shadow-sm"
-                                style="width: 50px; height: 50px;">
-                                <span class="h4 mb-0 fw-bold">101</span>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 fw-bold text-success">Sẵn sàng</h6>
-                                <small class="text-muted">Standard (Đơn)</small>
-                            </div>
-                        </div>
-
-                        <div class="bg-light rounded p-2 text-center mb-2 cursor-pointer hover-shadow"
-                            onclick="openModal('checkinModal', '101')">
-                            <i class="fas fa-plus-circle text-success fs-4 mb-1"></i>
-                            <div class="small fw-bold text-dark">Nhận khách mới</div>
-                        </div>
-
-                        <div class="d-flex justify-content-between text-muted small mt-3 border-top pt-2">
-                            <span><i class="fas fa-user"></i> Max: 2</span>
-                            <span><i class="fas fa-broom text-success"></i> Sạch</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MẪU 2: ĐANG CÓ KHÁCH (OCCUPIED) - Hiển thị tiền/giờ -->
-            <div class="col-xl-3 col-lg-4 col-md-6 room-item" data-room="102" data-type="Đôi" data-status="occupied"
-                data-floor="1">
-                <div
-                    class="card room-card h-100 shadow-sm border-0 border-top border-4 border-danger bg-danger bg-opacity-10">
-                    <div class="card-body position-relative">
-                        <div class="dropdown position-absolute top-0 end-0 mt-2 me-2">
-                            <button class="btn btn-sm btn-link text-danger p-0" data-bs-toggle="dropdown"><i
-                                    class="fas fa-ellipsis-v"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><a class="dropdown-item fw-bold text-danger" href="#"
-                                        onclick="openModal('checkoutModal', '102')"><i
-                                            class="fas fa-money-bill-wave me-2"></i>Thanh toán</a></li>
-                                <li><a class="dropdown-item" href="#"><i
-                                            class="fas fa-cart-plus text-primary me-2"></i>Thêm dịch vụ</a></li>
-                                <li><a class="dropdown-item" href="#"><i
-                                            class="fas fa-exchange-alt text-warning me-2"></i>Đổi phòng</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-danger text-white rounded-3 d-flex align-items-center justify-content-center me-3 shadow-sm"
-                                style="width: 50px; height: 50px;">
-                                <span class="h4 mb-0 fw-bold">102</span>
-                            </div>
-                            <div class="text-truncate" style="max-width: 120px;">
-                                <h6 class="mb-0 fw-bold text-danger text-truncate">Nguyễn Văn A</h6>
-                                <small class="text-dark"><i class="fas fa-clock"></i> 2h 30p</small>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded p-2 mb-2 border border-danger border-opacity-25 shadow-sm"
-                            onclick="openModal('addServiceModal', '102')">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <small class="text-muted">Tiền phòng:</small>
-                                <span class="fw-bold text-dark">150k</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">Dịch vụ:</small>
-                                <span class="fw-bold text-primary">35k</span>
-                            </div>
-                            <div class="border-top mt-1 pt-1 d-flex justify-content-between">
-                                <small class="fw-bold text-danger">TỔNG:</small>
-                                <small class="fw-bold text-danger">185k</small>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between text-muted small mt-2">
-                            <span><i class="fas fa-sign-in-alt"></i> 14:30</span>
-                            <div onclick="openCheckoutModal(1)"><span class="badge bg-warning text-dark">Chưa thanh toán</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MẪU 3: PHÒNG BẨN (DIRTY) - Cần dọn -->
-            <div class="col-xl-3 col-lg-4 col-md-6 room-item" data-room="205" data-type="VIP" data-status="dirty"
-                data-floor="2">
-                <div
-                    class="card room-card h-100 shadow-sm border-0 border-top border-4 border-warning bg-warning bg-opacity-10">
-                    <div class="card-body position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 end-0 mt-2 me-2">Chờ dọn</span>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center me-3 shadow-sm"
-                                style="width: 50px; height: 50px;">
-                                <span class="h4 mb-0 fw-bold">205</span>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 fw-bold text-dark">Phòng bẩn</h6>
-                                <small class="text-muted">VIP (Gia đình)</small>
-                            </div>
-                        </div>
-
-                        <div class="text-center py-2">
-                            <i class="fas fa-pump-soap fa-3x text-warning opacity-50 mb-2"></i>
-                            <p class="small text-muted mb-2">Khách vừa trả phòng lúc 12:00</p>
-                        </div>
-
-                        <button class="btn btn-warning w-100 btn-sm shadow-sm fw-bold text-dark">
-                            <i class="fas fa-broom me-1"></i> Xác nhận đã dọn
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MẪU 4: ĐẶT TRƯỚC (RESERVED) - Cảnh báo giờ đến -->
-            <div class="col-xl-3 col-lg-4 col-md-6 room-item" data-room="301" data-type="Đôi" data-status="occupied"
-                data-floor="3"> <!-- Status set là occupied để filter demo, thực tế là reserved -->
-                <div class="card room-card h-100 shadow-sm border-0 border-top border-4 border-info">
-                    <div class="card-body position-relative">
-                        <div class="dropdown position-absolute top-0 end-0 mt-2 me-2">
-                            <button class="btn btn-sm btn-link text-info p-0" data-bs-toggle="dropdown"><i
-                                    class="fas fa-ellipsis-v"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-pen me-2"></i>Sửa đặt
-                                        phòng</a></li>
-                                <li><a class="dropdown-item text-danger" href="#"><i
-                                            class="fas fa-times me-2"></i>Hủy đặt</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-info text-white rounded-3 d-flex align-items-center justify-content-center me-3 shadow-sm"
-                                style="width: 50px; height: 50px;">
-                                <span class="h4 mb-0 fw-bold">301</span>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 fw-bold text-info">Đặt trước</h6>
-                                <small class="text-muted">Deluxe (Đôi)</small>
-                            </div>
-                        </div>
-
-                        <div class="bg-light rounded p-2 mb-2 border border-info border-opacity-25">
-                            <div class="d-flex align-items-center mb-1">
-                                <i class="fas fa-user-clock text-info me-2"></i>
-                                <span class="fw-bold text-dark">Trần Thị B</span>
-                            </div>
-                            <div class="small text-danger fw-bold">
-                                <i class="fas fa-exclamation-circle"></i> Đến trong 30 phút nữa
-                            </div>
-                        </div>
-
-                        <button class="btn btn-outline-info w-100 btn-sm" onclick="openModal('checkinModal', '301')">
-                            <i class="fas fa-check-circle me-1"></i> Check-in ngay
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div> --}}
 
         <div class="row g-3" id="roomGrid">
 
@@ -526,7 +345,7 @@
                             </div>
 
                             <!-- Danh sách Tabs Categories -->
-                            <ul class="nav nav-pills mb-3 gap-2">
+                            {{-- <ul class="nav nav-pills mb-3 gap-2">
                                 <li class="nav-item"><a class="nav-link active py-1 px-3 btn-sm" href="#">Tất
                                         cả</a></li>
                                 <li class="nav-item"><a class="nav-link bg-white text-dark border py-1 px-3 btn-sm"
@@ -535,55 +354,11 @@
                                         href="#">Đồ ăn</a></li>
                                 <li class="nav-item"><a class="nav-link bg-white text-dark border py-1 px-3 btn-sm"
                                         href="#">Giặt ủi</a></li>
-                            </ul>
+                            </ul> --}}
 
                             <!-- Grid Món ăn -->
-                            <div class="row g-2 overflow-auto" style="max-height: 400px;">
-                                <!-- Món 1 -->
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="card h-100 shadow-sm border-0 room-card"
-                                        onclick="addToCart('Nước Suối', 10000)">
-                                        <div class="card-body p-2 text-center">
-                                            <div class="mb-2"><i class="fas fa-bottle-water fa-2x text-primary"></i>
-                                            </div>
-                                            <h6 class="card-title fs-6 fw-bold mb-1">Nước Suối</h6>
-                                            <div class="text-success fw-bold">10,000 ₫</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Món 2 -->
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="card h-100 shadow-sm border-0 room-card"
-                                        onclick="addToCart('Bia Tiger', 25000)">
-                                        <div class="card-body p-2 text-center">
-                                            <div class="mb-2"><i class="fas fa-beer fa-2x text-warning"></i></div>
-                                            <h6 class="card-title fs-6 fw-bold mb-1">Bia Tiger</h6>
-                                            <div class="text-success fw-bold">25,000 ₫</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Món 3 -->
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="card h-100 shadow-sm border-0 room-card"
-                                        onclick="addToCart('Mì Bò Trứng', 35000)">
-                                        <div class="card-body p-2 text-center">
-                                            <div class="mb-2"><i class="fas fa-bowl-food fa-2x text-danger"></i></div>
-                                            <h6 class="card-title fs-6 fw-bold mb-1">Mì Bò Trứng</h6>
-                                            <div class="text-success fw-bold">35,000 ₫</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Món 4 -->
-                                <div class="col-md-4 col-sm-6">
-                                    <div class="card h-100 shadow-sm border-0 room-card"
-                                        onclick="addToCart('Khăn Lạnh', 5000)">
-                                        <div class="card-body p-2 text-center">
-                                            <div class="mb-2"><i class="fas fa-box-tissue fa-2x text-info"></i></div>
-                                            <h6 class="card-title fs-6 fw-bold mb-1">Khăn Lạnh</h6>
-                                            <div class="text-success fw-bold">5,000 ₫</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="menuService" class="row g-2 overflow-auto" style="max-height: 400px;">
+
                             </div>
                         </div>
 
@@ -602,53 +377,16 @@
                                             <th style="width: 30px;"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <!-- Item Demo 1 -->
-                                        <tr>
-                                            <td>Bia Tiger</td>
-                                            <td>
-                                                <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">-</button>
-                                                    <input type="text" class="form-control text-center px-0 py-0"
-                                                        value="2" style="height:24px">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">+</button>
-                                                </div>
-                                            </td>
-                                            <td class="text-end fw-bold">50,000</td>
-                                            <td class="text-end"><i class="fas fa-times text-danger cursor-pointer"></i>
-                                            </td>
-                                        </tr>
-                                        <!-- Item Demo 2 -->
-                                        <tr>
-                                            <td>Mì Bò Trứng</td>
-                                            <td>
-                                                <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">-</button>
-                                                    <input type="text" class="form-control text-center px-0 py-0"
-                                                        value="1" style="height:24px">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">+</button>
-                                                </div>
-                                            </td>
-                                            <td class="text-end fw-bold">35,000</td>
-                                            <td class="text-end"><i class="fas fa-times text-danger cursor-pointer"></i>
-                                            </td>
-                                        </tr>
+                                    <tbody id="tbodyServices">
+
                                     </tbody>
                                 </table>
                             </div>
 
                             <!-- Tổng tiền & Action -->
-                            <div class="bg-light p-3 rounded">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Tổng số lượng:</span>
-                                    <b>3</b>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fw-bold fs-5">TỔNG CỘNG:</span>
-                                    <span class="fw-bold fs-4 text-danger">85,000 ₫</span>
-                                </div>
-                                <button class="btn btn-warning w-100 fw-bold"><i class="fas fa-save"></i> CẬP NHẬT DỊCH
-                                    VỤ</button>
+                            <div class="bg-light p-3 rounded" id="totalServicePrice">
+
+                                
                             </div>
                         </div>
                     </div>
@@ -920,6 +658,10 @@
     <script>
         // --- PRO FILTER LOGIC ---
         let currentStatus = 'all';
+        const rooms = @json($rooms->keyBy('id'));
+        const services = @json($services)
+
+        console.log(services);
 
         function filterStatus(status) {
             currentStatus = status;
@@ -993,19 +735,102 @@
         }
 
         // Cập nhật hàm mở modal để hỗ trợ modal dịch vụ mới
-        function openModal(modalId, roomNum) {
-            if (modalId === 'checkinModal') {
-                document.getElementById('modalRoomTitle').innerText = roomNum;
-            } else if (modalId === 'addServiceModal') { // Modal mới
-                document.getElementById('serviceRoomTitle').innerText = roomNum;
-            } else if (modalId === 'checkoutModal') {
-                document.getElementById('coRoomTitle').innerText = roomNum;
-            }
+        // function openModal(modalId, roomNum) {
+        //     if (modalId === 'checkinModal') {
+        //         document.getElementById('modalRoomTitle').innerText = roomNum;
+        //     } else if (modalId === 'addServiceModal') { // Modal mới
+        //         document.getElementById('serviceRoomTitle').innerText = roomNum;
+        //     } else if (modalId === 'checkoutModal') {
+        //         document.getElementById('coRoomTitle').innerText = roomNum;
+        //     }
 
-            var myModal = new bootstrap.Modal(document.getElementById(modalId));
-            myModal.show();
+        //     var myModal = new bootstrap.Modal(document.getElementById(modalId));
+        //     myModal.show();
+        // }
+
+
+
+        /* --------------------------XỬ LÝ SERVICE---------------------------- */
+        function openModalService(id) {
+            data = rooms[id]
+            console.log(data['active_booking']['booking_service']);
+
+            var myModal = new bootstrap.Modal(document.getElementById('addServiceModal'));
+            myModal.show()
+
+            const menu = document.getElementById('menuService');
+            const tbodyServices = document.getElementById('tbodyServices')
+
+            //thêm menu services
+            menu.innerHTML = '';
+            services.forEach((it, idx) => {
+                const row = `
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card h-100 shadow-sm border-0 room-card"
+                            onclick="addToCart('${it.name}', ${it.price})">
+                            <div class="card-body p-2 text-center">
+                                <h6 class="card-title fs-6 fw-bold mb-1">${it.name}</h6>
+                                <div class="text-success fw-bold">${Number(it.price).toLocaleString()} ₫</div>
+                            </div>
+                        </div>
+                    </div>`;
+                menu.innerHTML += row
+            });
+
+            //------------------danh sách service đã chọn
+            tbodyServices.innerHTML = ''
+            data['active_booking']['booking_service'].forEach((it, idx) => {
+                const tr =
+                    `
+                                        <tr>
+                                            <td>${it.service.name}</td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <button class="btn btn-outline-secondary px-1 py-0">-</button>
+                                                    <input type="text" class="form-control text-center px-0 py-0"
+                                                        value="${it.quantity}" style="height:24px">
+                                                    <button class="btn btn-outline-secondary px-1 py-0">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="text-end fw-bold">${Number(it.service.price * it.quantity).toLocaleString()}</td>
+                                            <td class="text-end"><i class="fas fa-times text-danger cursor-pointer"></i>
+                                            </td>
+                                        </tr>
+                `
+                tbodyServices.innerHTML += tr
+            });
+
+            //tổng tiền dịch vụ
+            const totalServicePrice = document.getElementById('totalServicePrice')
+            const totalService = data.active_booking.booking_service.reduce((sum, item) => {
+                return sum + (Number(item.service.price) * Number(item.quantity));
+            }, 0);
+
+            const totalQty = data.active_booking.booking_service.reduce((sum, item) => {
+                return sum + Number(item.quantity);
+            }, 0);
+            totalServicePrice.innerHTML = ''
+            data['active_booking']['booking_service'].reduce((acc, cur) => {
+                const html =
+                    `
+                    <div class="d-flex justify-content-between mb-2">
+                                    <span>Tổng số lượng:</span>
+                                    <b>${Number(totalQty).toLocaleString()}</b>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-bold fs-5">TỔNG CỘNG:</span>
+                                    <span class="fw-bold fs-4 text-danger">${totalService}</span>
+                                </div>
+                                <button class="btn btn-warning w-100 fw-bold"><i class="fas fa-save"></i> CẬP NHẬT DỊCH
+                                    VỤ</button>
+                `
+                totalServicePrice.innerHTML = html
+            });
+            console.log(data['active_booking']['booking_service']);
+
+
+
         }
-
         // Hàm mở Modal Check-out (Giả lập lấy dữ liệu từ DB)
         function openCheckoutModal(roomId) {
             // 1. Cập nhật ngày giờ xuất hóa đơn (Mapping field: issued_at)
@@ -1025,16 +850,16 @@
         // Logic khi bấm "Hoàn tất"
         function submitInvoice() {
             // Lấy dữ liệu để đẩy vào bảng invoices
-            const invoiceData = {
-                user_id: 123, // ID khách hàng
-                booking_id: 456, // ID booking hiện tại
-                payment_id: document.querySelector('input[name="payment_id"]:checked').value,
-                total: 790000, // Giá trị final
-                issued_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-            };
+            // const invoiceData = {
+            //     user_id: 123, // ID khách hàng
+            //     booking_id: 456, // ID booking hiện tại
+            //     payment_id: document.querySelector('input[name="payment_id"]:checked').value,
+            //     total: 790000, // Giá trị final
+            //     issued_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            // };
 
-            console.log("Dữ liệu lưu vào DB:", invoiceData);
-            alert("Thanh toán thành công! Đang in hóa đơn...");
+            // console.log("Dữ liệu lưu vào DB:", invoiceData);
+            // alert("Thanh toán thành công! Đang in hóa đơn...");
         }
     </script>
 @endsection

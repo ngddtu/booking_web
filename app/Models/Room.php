@@ -81,14 +81,17 @@ class Room extends Model
         // Bắt đầu query builder từ Room
         $query = self::query()
             ->with(['roomType:id,name,initial_hour_rate,overnight_rate,daily_rate'])
-            ->with(['activeBooking' => function ($q) {
-                $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out','status');
-            }, 'activeBooking.customer' => function ($q) {
-                $q->select('id', 'name', 'phone', 'address');
-            }, 'activeBooking.booking_service.service' => function ($q) {
-                $q->select('id', 'name', 'price');
-            }
-        ]);
+            ->with([
+                'activeBooking' => function ($q) {
+                    $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out', 'status');
+                },
+                'activeBooking.customer' => function ($q) {
+                    $q->select('id', 'name', 'phone', 'address');
+                },
+                'activeBooking.booking_service.service' => function ($q) {
+                    $q->select('id', 'name', 'price');
+                }
+            ]);
 
         // filters: ví dụ room_number, status, type_room_id
         if (!empty($filters['room_number'])) {
@@ -104,12 +107,40 @@ class Room extends Model
         // phân trang hoặc get()
         return $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
     }
+
+    //lấy ra tổng tiền services
+    public function getServicePriceAttribute()
+    {
+        if (!$this->activeBooking) return 0;
+
+        return $this->activeBooking->booking_service->sum(fn($bs) => $bs->service->price);
+    }
+
+    //lấy ra tổng tiền
+    public function getTotalPriceAttribute()
+    {
+        $roomPrice = $this->activeBooking->total_price ?? 0;
+        return $roomPrice + $this->service_price;
+    }
+
+    //lấy ra list services
+    public function getServiceListAttribute()
+    {
+        if (!$this->activeBooking) return [];
+
+        return $this->activeBooking->booking_service->map(fn($bs) => [
+            'name' => $bs->service->name,
+            'price' => $bs->service->price
+        ]);
+    }
+
     public function roomType()
     {
         return $this->belongsTo(TypeRoom::class, 'room_type_id');
     }
 
-    public function booking(){
+    public function booking()
+    {
         return $this->hasMany(Booking::class, 'room_id');
     }
 

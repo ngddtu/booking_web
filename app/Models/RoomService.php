@@ -16,4 +16,9 @@ class RoomService extends Model
         'price',
         'unit',
     ];
+
+    public function getServiceAttribute() {
+        $services = RoomService::get();
+        return $services;
+    }
 }

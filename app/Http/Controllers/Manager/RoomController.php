@@ -7,6 +7,7 @@ use App\Models\TypeRoom;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Models\RoomService;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -16,10 +17,12 @@ class RoomController extends Controller
      * Display a listing of the resource.
      */
     protected $room;
+    protected $service;
     protected $roomType;
-    public function __construct(Room $room, TypeRoom $roomType)
+    public function __construct(Room $room, TypeRoom $roomType, RoomService $service)
     {
         $this->room = $room;
+        $this->service = $service;
         $this->roomType = $roomType;
     }
     public function index(Request $request)
@@ -120,8 +123,10 @@ class RoomController extends Controller
     public function manage_reserve(Request $request)
     {
         $rooms = $this->room->listWithActiveBooking($request->all());
+        $services = $this->service->getServiceAttribute();
+        // dd($services);
         // dd($rooms[3]);
-        dd($rooms[3]->activeBooking->booking_service->map(fn($bs)=> $bs->service->name));
-        return view('saler.manage-booking', compact('rooms'));
+        // dd($rooms[3]->activeBooking->booking_service->map(fn($bs)=> $bs->service->name));
+        return view('saler.manage-booking', compact('rooms', 'services'));
     }
 }
