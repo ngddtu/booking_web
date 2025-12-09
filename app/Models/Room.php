@@ -89,7 +89,7 @@ class Room extends Model
                     $q->select('id', 'name', 'phone', 'address');
                 },
                 'activeBooking.booking_service.service' => function ($q) {
-                    $q->select('id', 'name', 'price');
+                    $q->select('id' ,'name', 'price');
                 }
             ]);
 
@@ -113,7 +113,9 @@ class Room extends Model
     {
         if (!$this->activeBooking) return 0;
 
-        return $this->activeBooking->booking_service->sum(fn($bs) => $bs->service->price);
+        return $this->activeBooking->booking_service->sum(function($bs) {
+        return $bs->quantity * $bs->service->price;
+    });
     }
 
     //lấy ra tổng tiền

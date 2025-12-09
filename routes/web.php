@@ -8,6 +8,7 @@ use App\Http\Controllers\Manager\RoomController;
 use App\Http\Controllers\Manager\TypeRoomController;
 use App\Http\Controllers\Manager\RoomServiceController;
 use App\Http\Controllers\Saler\BookingController;
+use App\Http\Controllers\Saler\BookingServiceController;
 use App\Http\Controllers\Saler\CustomerController;
 
 Route::get('/', [HomeController::class, 'index'])->name('login');
@@ -69,3 +70,6 @@ Route::prefix('reserve')->name('reserve.')->group(function () {
 });
 
 
+Route::prefix('booking-services')->group(function(){
+    Route::put('booking-service/update/{bookingId}', [BookingServiceController::class, 'update'])->name('booking-services.update');
+});

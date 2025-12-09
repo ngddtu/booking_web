@@ -127,7 +127,7 @@
             {{-- Vòng lặp foreach thần thánh nằm ở đây --}}
             @foreach ($rooms as $room)
                 {{-- Truyền từng đối tượng $room đơn lẻ vào Component --}}
-                <x-room-card :room="$room" />
+                <gitroom-card :room="$room" />
             @endforeach
 
         </div>
@@ -377,17 +377,22 @@
                                             <th style="width: 30px;"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbodyServices">
+                                    <form id="servicesForm" method="post">
+                                        @method('PUT')
+                                        @csrf
+                                        <input type="hidden" name="services" id="servicesInput">
+                                        <tbody id="tbodyServices">
 
-                                    </tbody>
+                                            {{-- danh sách các món đã gọi --}}
+                                        </tbody>
                                 </table>
                             </div>
 
                             <!-- Tổng tiền & Action -->
                             <div class="bg-light p-3 rounded" id="totalServicePrice">
 
-                                
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -659,9 +664,8 @@
         // --- PRO FILTER LOGIC ---
         let currentStatus = 'all';
         const rooms = @json($rooms->keyBy('id'));
-        const services = @json($services)
-
-        console.log(services);
+        const services = @json($services);
+        let servicesState = [];
 
         function filterStatus(status) {
             currentStatus = status;
@@ -728,10 +732,60 @@
         }
 
         // SIMULATE: Thêm vào giỏ hàng (Chỉ alert demo)
-        function addToCart(itemName, price) {
-            // Thực tế sẽ thêm row vào table bên phải
-            // Ở đây mình làm hiệu ứng visual thôi
-            alert("Đã thêm: " + itemName + " (" + price.toLocaleString() + "đ) vào danh sách!");
+        function addToCart(itemName, price, id) {
+            const tbody = document.getElementById('tbodyServices');
+
+            // Kiểm tra service đã tồn tại chưa
+            let row = tbody.querySelector(`tr[data-id="${id}"]`);
+
+            if (row) {
+                // Nếu tồn tại -> tăng qty
+                let input = row.querySelector('.quantity_service');
+                input.value = Number(input.value) + 1;
+                const item = servicesState.find(x => x.service.id == id);
+                if (item) {
+                    item.quantity = input.value;
+                }
+            } else {
+
+                // Nếu chưa có -> thêm vào state
+                servicesState.push({
+                    service: {
+                        id: id,
+                        name: itemName,
+                        price: price,
+                    },
+                    service_id: id,
+                    quantity: 1,
+                    booking_id: data.active_booking.id
+                });
+                console.log(servicesState);
+
+                // Nếu chưa có -> thêm row mới
+                const tr = `
+            <tr data-id="${id}">
+                <td>${itemName}</td>
+                <td>
+                    <div class="input-group input-group-sm">
+                        
+                        <input type="text" class="form-control text-center px-0 py-0 quantity_service"
+                            value="1" style="height:24px">
+                        
+                    </div>
+                </td>
+                <td class="text-end fw-bold total_price" data-price="${price}">
+                    ${Number(price).toLocaleString()}
+                </td>
+                <td class="text-end">
+                    <i class="fas fa-times text-danger cursor-pointer"></i>
+                </td>
+            </tr>
+        `;
+                tbody.insertAdjacentHTML("beforeend", tr);
+            }
+
+            // Update UI totals
+            handleTotals();
         }
 
         // Cập nhật hàm mở modal để hỗ trợ modal dịch vụ mới
@@ -753,21 +807,78 @@
         /* --------------------------XỬ LÝ SERVICE---------------------------- */
         function openModalService(id) {
             data = rooms[id]
-            console.log(data['active_booking']['booking_service']);
+            // console.log(data['active_booking']['booking_service']);
+            servicesState = JSON.parse(JSON.stringify(data.active_booking.booking_service));
+            console.log(servicesState);
 
             var myModal = new bootstrap.Modal(document.getElementById('addServiceModal'));
             myModal.show()
 
-            const menu = document.getElementById('menuService');
-            const tbodyServices = document.getElementById('tbodyServices')
 
+
+
+            renderCart();
+            // Lấy tổng qty hiện tại (số)
+
+        }
+
+        function handleTotals() {
+            //lấy tổng số lượng dịch vụ
+            let totalQty = Number(document.getElementById('totalQty').textContent)
+
+            // Lấy các input số lượng
+            const quantity_service = document.querySelectorAll('.quantity_service')
+
+            let quantity_service_array = Array.from(quantity_service);
+            let newTotal = quantity_service_array.reduce((acc, cur) => {
+                return acc + Number(cur.value)
+            }, 0)
+
+            document.getElementById('totalQty').textContent = newTotal
+
+
+            //lấy ra tổng tiền của từng dịch vụ
+            let total_price = Array.from(document.querySelectorAll('.total_price'))
+            // console.log(Number(total_price[0].textContent).toLocaleString());
+            let rows = Array.from(document.querySelectorAll('tr'))
+
+            rows.forEach(row => {
+                let input = row.querySelector('.quantity_service')
+                let priceEl = row.querySelector('.total_price')
+
+                if (!input || !priceEl) return
+
+                let quantity = Number(input.value)
+                let price = Number(priceEl.dataset.price) // đơn giá
+                let total = price * quantity // thành tiền
+
+                priceEl.textContent = total.toLocaleString()
+            })
+
+            console.log(total_price[0].dataset.price);
+
+            let newTotalService = total_price.reduce((acc, cur) => {
+                return acc + Number(cur.textContent.replace(/,/g, ""))
+            }, 0)
+            console.log(newTotalService * 1000);
+
+            document.getElementById('totalService').textContent = Number(newTotalService * 1000).toLocaleString()
+
+        }
+
+
+
+
+        function renderCart() {
             //thêm menu services
+            const tbodyServices = document.getElementById('tbodyServices');
+            const menu = document.getElementById('menuService');
             menu.innerHTML = '';
             services.forEach((it, idx) => {
                 const row = `
                     <div class="col-md-4 col-sm-6">
                         <div class="card h-100 shadow-sm border-0 room-card"
-                            onclick="addToCart('${it.name}', ${it.price})">
+                            onclick="addToCart('${it.name}', ${it.price}, ${it.id})">
                             <div class="card-body p-2 text-center">
                                 <h6 class="card-title fs-6 fw-bold mb-1">${it.name}</h6>
                                 <div class="text-success fw-bold">${Number(it.price).toLocaleString()} ₫</div>
@@ -777,22 +888,20 @@
                 menu.innerHTML += row
             });
 
-            //------------------danh sách service đã chọn
+            //------------------danh sách service đã chọn------------
             tbodyServices.innerHTML = ''
             data['active_booking']['booking_service'].forEach((it, idx) => {
                 const tr =
                     `
-                                        <tr>
+                                        <tr data-id="${it.service.id}">
                                             <td>${it.service.name}</td>
                                             <td>
-                                                <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">-</button>
-                                                    <input type="text" class="form-control text-center px-0 py-0"
+                                                <div class="input-group input-group-sm">                                
+                                                    <input type="text" class="form-control text-center px-0 py-0 quantity_service"
                                                         value="${it.quantity}" style="height:24px">
-                                                    <button class="btn btn-outline-secondary px-1 py-0">+</button>
                                                 </div>
                                             </td>
-                                            <td class="text-end fw-bold">${Number(it.service.price * it.quantity).toLocaleString()}</td>
+                                            <td class="text-end fw-bold total_price" data-price="${it.service.price}">${Number(it.service.price * it.quantity).toLocaleString()}</td>
                                             <td class="text-end"><i class="fas fa-times text-danger cursor-pointer"></i>
                                             </td>
                                         </tr>
@@ -809,28 +918,106 @@
             const totalQty = data.active_booking.booking_service.reduce((sum, item) => {
                 return sum + Number(item.quantity);
             }, 0);
-            totalServicePrice.innerHTML = ''
-            data['active_booking']['booking_service'].reduce((acc, cur) => {
-                const html =
-                    `
-                    <div class="d-flex justify-content-between mb-2">
-                                    <span>Tổng số lượng:</span>
-                                    <b>${Number(totalQty).toLocaleString()}</b>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fw-bold fs-5">TỔNG CỘNG:</span>
-                                    <span class="fw-bold fs-4 text-danger">${totalService}</span>
-                                </div>
-                                <button class="btn btn-warning w-100 fw-bold"><i class="fas fa-save"></i> CẬP NHẬT DỊCH
-                                    VỤ</button>
-                `
-                totalServicePrice.innerHTML = html
-            });
-            console.log(data['active_booking']['booking_service']);
+            // totalServicePrice.innerHTML = ''
+            const html = `
+    <div class="d-flex justify-content-between mb-2">
+        <span>Tổng số lượng:</span>
+        <b id="totalQty">${Number(totalQty).toLocaleString()}</b>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="fw-bold fs-5">TỔNG CỘNG:</span>
+        <span id="totalService" class="fw-bold fs-4 text-danger">
+            ${Number(totalService).toLocaleString()}
+        </span>
+    </div>
+    <button onclick="submitServices()" class="btn btn-warning w-100 fw-bold">
+        <i class="fas fa-save"></i> CẬP NHẬT DỊCH VỤ
+    </button>
+`;
 
+            // Gán HTML vào DOM
+            totalServicePrice.innerHTML = html;
+
+            /* ------------------------xử lí cộng trừ service----------------- */
+            document.getElementById('tbodyServices').addEventListener('click', function(e) {
+                //nút trừ
+                // if (e.target.matches('.minus-btn')) {
+                //     const id = e.target.dataset.set;
+                //     const input = e.target.nextElementSibling;
+                //     let qty = parseFloat(input.value);
+                //     qty-- // trừ trước
+
+                //     if (qty <= 0) {
+                //         const row = e.target.closest('tr');
+                //         row.remove();
+                //         handleTotals();
+                //         return; // thoát để không set input.value tiếp
+                //     }
+
+                //     input.value = qty
+                //     handleTotals();
+                // }
+
+                // //nút cộng
+                // if (e.target.matches('.plus-btn')) {
+                //     const id = e.target.dataset.set;
+
+                //     const input = e.target.previousElementSibling;
+                //     let qty = parseFloat(input.value);
+                //     if (qty >= 0) qty++
+
+                //     input.value = qty
+                //     handleTotals();
+                // }
+
+                //nút xóa
+                if (e.target.matches('.cursor-pointer')) {
+                    const row = e.target.closest('tr');
+                    const id = row.dataset.id; // lấy id từ <tr data-id="">
+
+                    // Xóa khỏi DOM
+                    row.remove();
+
+                    // Xóa khỏi state
+                    servicesState = servicesState.filter(x => x.service.id != id);
+                    console.log(servicesState);
+
+                    // Update UI
+                    handleTotals();
+                }
+            })
+
+            document.getElementById('tbodyServices').addEventListener('input', function(e) {
+                if (!e.target.matches('.quantity_service')) return;
+
+                const row = e.target.closest('tr');
+                const id = row.dataset.id;
+                let qty = Number(e.target.value);
+
+                // Nếu người dùng xóa input -> chưa xoá ngay, chuyển về 1
+                if (e.target.value == '') return;
+
+                // Nếu qty <= 0 -> xoá luôn dịch vụ
+                if (qty <= 0) {
+                    row.remove();
+                    servicesState = servicesState.filter(x => x.service.id != id);
+                    handleTotals();
+                    return;
+                }
+                const item = servicesState.find(x => x.service.id == id);
+                if (item) {
+                    item.quantity = qty;
+                }
+                console.log(servicesState);
+                // Cập nhật totals
+                handleTotals();
+            });
+            /* --------------------------------------------------------------- */
 
 
         }
+
+
         // Hàm mở Modal Check-out (Giả lập lấy dữ liệu từ DB)
         function openCheckoutModal(roomId) {
             // 1. Cập nhật ngày giờ xuất hóa đơn (Mapping field: issued_at)
@@ -846,6 +1033,14 @@
             var myModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
             myModal.show();
         }
+
+        function submitServices() {
+            document.getElementById('servicesInput').value = JSON.stringify(servicesState);
+            document.getElementById('servicesForm').action =
+                `/booking-services/booking-service/update/${data.active_booking.id}`
+            document.getElementById('servicesForm').submit();
+        }
+
 
         // Logic khi bấm "Hoàn tất"
         function submitInvoice() {
