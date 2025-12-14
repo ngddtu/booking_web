@@ -77,7 +77,7 @@
                         <h6 class="mb-0 fw-bold text-{{ $theme['color'] }} text-truncate">
                             @if (($status === 'occupied' || $status === 'booked') && $customer)
                                 {{-- Nếu đang ở/đặt trước thì hiện tên khách --}}
-                                {{ $customer->name }}
+                                {{ $customer->name ?? null }}
                             @else
                                 {{-- Còn lại hiện Label trạng thái --}}
                                 {{ $theme['label'] }}
@@ -98,10 +98,10 @@
                         <li>
                             <h6 class="dropdown-header">Thao tác nhanh</h6>
                         </li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-info-circle me-2 text-info"></i>Xem
+                        <li onclick="openBookingListModal({{ $room->id }})"><a class="dropdown-item" href="#"><i class="fas fa-info-circle me-2 text-info"></i>Xem
                                 chi
                                 tiết</a></li>
-                        <li><a class="dropdown-item" href="#"><i
+                        <li ><a class="dropdown-item" href="#"><i
                                     class="fas fa-history me-2 text-secondary"></i>Lịch
                                 sử phòng</a></li>
                         {{-- Bạn có thể thêm các menu dynamic theo status ở đây nếu muốn --}}

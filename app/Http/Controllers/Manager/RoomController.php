@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Models\Room;
+use App\Models\Booking;
 use App\Models\TypeRoom;
+use App\Models\RoomService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
-use App\Models\RoomService;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -59,11 +60,11 @@ class RoomController extends Controller
 
             ]);
             $this->room->store_new_room($data);
-            return redirect()->back()->with('success', 'Thêm loại phòng thành công!');
+            return redirect()->back()->with('success', 'Thêm phòng thành công!');
         } catch (ValidationException $e) {
             $message = $e->errors();
             return redirect()->back()
-                ->with('error', 'Thêm loại phòng không thành công!')
+                ->with('error', 'Thêm phòng không thành công!')
                 ->withErrors($message) // truyền lỗi từng field
                 ->withInput();
         }
@@ -125,8 +126,29 @@ class RoomController extends Controller
         $rooms = $this->room->listWithActiveBooking($request->all());
         $services = $this->service->getServiceAttribute();
         // dd($services);
-        // dd($rooms[3]);
+        // dd($rooms);
         // dd($rooms[3]->activeBooking->booking_service->map(fn($bs)=> $bs->service->name));
         return view('saler.manage-booking', compact('rooms', 'services'));
+    }
+
+
+    public function showCheckinModal($roomId)
+    {
+        $room = Room::with('roomType')->findOrFail($roomId);
+
+        // $now = now();
+
+        $bookings = Booking::with('customer')
+            ->where('room_id', $roomId)
+            ->where('status', 'pending') // chưa checkin
+            // ->where('start_time', '<=', $now)
+            // ->where('end_time', '>=', $now)
+            ->orderBy('check_in', 'asc')
+            ->get();
+
+        return response()->json([
+            'room' => $room,
+            'bookings' => $bookings
+        ]);
     }
 }

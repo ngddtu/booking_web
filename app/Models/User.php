@@ -48,6 +48,9 @@ class User extends Authenticatable
     }
 
 
+    const ROLE_MANAGER = 0;
+    const ROLE_SALER = 1;
+
     public function register(array $data){
         $this->create($data);
     }
@@ -55,5 +58,14 @@ class User extends Authenticatable
     public function login(array $data) {
         $user = auth()->attempt(['email' => $data['email'], 'password' => $data['password']]);
         return $user ? true : false ;
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role == $role;
+    }
+
+    public function isAdmin() {
+        return $this->role === self::ROLE_MANAGER;
     }
 }

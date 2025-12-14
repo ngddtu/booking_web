@@ -11,9 +11,15 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 
+        'name',
+        'phone',
         'email',
-        'address', 
+        'address',
+        'gender',
+        'nationality',
+        'citizen_id',
+        'rank',
+        'note',
         'status'
     ]; 
 
@@ -22,6 +28,11 @@ class Customer extends Model
         if(isset($filters['phone'])){
             $query->where('phone', 'like', '%' . $filters['phone'] . '%');
         }
-        return $query->orderBy('id', 'desc')->paginate(8)->withQueryString();
+        return $query->withCount('bookings')->withSum('bookings', 'total_price')->orderBy('id', 'desc')->paginate(8)->withQueryString();
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

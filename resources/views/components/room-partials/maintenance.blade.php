@@ -8,6 +8,6 @@
     </div>
 </div>
 
-<button class="btn btn-outline-dark w-100 btn-sm">
+<button class="btn btn-outline-dark w-100 btn-sm" onclick="finishMaintenance({{ $room->id }})">
     <i class="fas fa-wrench me-1"></i> Hoàn tất bảo trì
 </button>

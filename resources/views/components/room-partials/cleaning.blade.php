@@ -1,55 +1,34 @@
-{{-- resources/views/components/room-partials/occupied.blade.php --}}
+{{-- resources/views/components/room-partials/cleaning.blade.php --}}
 
 @php
-    // Lấy booking từ relation đã load sẵn
+    // Lấy booking từ relation đã load sẵn (nếu có)
     $booking = $room->activeBooking;
-    
-    // Tính toán hiển thị (Có thể dùng Accessor trong Model để gọn hơn)
-    $roomPrice = $booking->temp_room_price ?? 0;
-    $servicePrice = $booking->temp_service_price ?? 0;
-    $total = $roomPrice + $servicePrice;
 @endphp
 
-<!-- Khu vực hiển thị tiền (Click vào để thêm dịch vụ) -->
-<div class="bg-white rounded p-2 mb-2 border border-danger border-opacity-25 shadow-sm cursor-pointer"
-     onclick="openModal('addServiceModal', '{{ $room->number }}')"
-     title="Bấm để thêm dịch vụ">
-    
-    <div class="d-flex justify-content-between align-items-center mb-1">
-        <small class="text-muted">Tiền phòng:</small>
-        <span class="fw-bold text-dark">{{ number_format($roomPrice) }}</span>
-    </div>
-    
-    <div class="d-flex justify-content-between align-items-center">
-        <small class="text-muted">Dịch vụ:</small>
-        <span class="fw-bold text-primary">{{ number_format($servicePrice) }}</span>
-    </div>
-    
-    <div class="border-top mt-1 pt-1 d-flex justify-content-between align-items-center">
-        <small class="fw-bold text-danger" style="font-size: 0.75rem">TẠM TÍNH:</small>
-        <small class="fw-bold text-danger fs-6">{{ number_format($total) }}</small>
-    </div>
+<!-- Khu vực hiển thị thông tin -->
+<div class="bg-white rounded p-2 mb-2 border border-warning border-opacity-25 shadow-sm text-center">
+    <i class="fas fa-broom fa-2x text-warning mb-2"></i>
+    <div class="fw-bold text-dark">Đang dọn dẹp</div>
+    <small class="text-muted">Phòng sẽ sẵn sàng sau khi hoàn tất</small>
 </div>
 
-<!-- Nút thao tác nhanh -->
+<!-- Nút thao tác -->
 <div class="row g-1">
-    <div class="col-6">
-        <button class="btn btn-outline-primary w-100 btn-sm p-1" 
-                onclick="openModal('addServiceModal', '{{ $room->number }}')" 
-                title="Thêm dịch vụ">
-            <i class="fas fa-cart-plus"></i> <small>Menu</small>
+    <div class="col-12">
+        <form action="" id="finishCleaningForm" method="post"> 
+            @csrf
+        <button class="btn btn-success w-100 btn-sm p-1" 
+                onclick="finishCleaning({{ $room->id }})" 
+                title="Hoàn tất dọn dẹp">
+            <i class="fas fa-check-circle"></i> <small>Hoàn tất dọn dẹp</small>
         </button>
-    </div>
-    <div class="col-6">
-        <button class="btn btn-danger w-100 btn-sm p-1" 
-                onclick="openCheckoutModal('{{ $room->number }}')" 
-                title="Thanh toán">
-            <i class="fas fa-money-bill-wave"></i> <small>Trả phòng</small>
-        </button>
+    </form>
     </div>
 </div>
 
-<!-- Thời gian check-in -->
+<!-- Thông tin -->
+{{-- @if($booking)
 <div class="text-center mt-2 small text-muted">
-    <i class="far fa-clock me-1"></i> Vào: {{ $booking ? \Carbon\Carbon::parse($booking->checkin_time)->format('H:i d/m') : '--:--' }}
+    <i class="far fa-clock me-1"></i> Check-out: {{ \Carbon\Carbon::parse($booking->check_out)->format('H:i d/m') ?? '--:--' }}
 </div>
+@endif --}}

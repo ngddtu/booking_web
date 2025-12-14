@@ -18,14 +18,16 @@ class Booking extends Model
         'check_in',
         'check_out',
         'total_price',
-        'status'
+        'status',
+        'rent_type',
+        'note'
     ];
 
-    public function index()
+    public function getListBookings()
     {
         $query = $this->newQuery()->with(['customer', 'room']);
-        $room = $query->orderBy('id', 'desc')->paginate(8)->withQueryString();
-        return $room;
+        $bookings = $query->orderBy('id', 'desc')->paginate(8)->withQueryString();
+        return $bookings;
     }
 
     // App/Models/Booking.php
@@ -37,7 +39,6 @@ class Booking extends Model
     //         ->whereDate('check_in', '<=', $now)
     //         ->whereDate('check_out', '>=', $now);
     // }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
@@ -53,5 +54,8 @@ class Booking extends Model
         return $this->hasMany(BookingService::class, 'booking_id');
     }
 
-    
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }

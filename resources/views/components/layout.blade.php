@@ -147,43 +147,55 @@
         <nav class="nav flex-column p-2 flex-grow-1">
 
             <!-- Dashboard -->
-            <a href="#" class="nav-link" onclick="switchView('dashboard', this)">
+            <a href="{{ route('room.manage-room') }}"
+                class="nav-link {{ request()->routeIs('room.manage-room') ? 'active' : '' }}"
+                onclick="switchView('dashboard', this)">
                 <i class="fas fa-tachometer-alt me-2 text-center" style="width:20px"></i> Tổng quan
             </a>
 
             <!-- SALE SECTION -->
             <div class="nav-header mt-2">Lễ Tân (Sale)</div>
-            <a href="{{ route('reserve.manage_reserve') }}" class="nav-link ">
+            <a href="{{ route('reserve.manage_reserve') }}"
+                class="nav-link {{ request()->routeIs('reserve.manage_reserve') ? 'active' : '' }}">
                 <i class="fas fa-th me-2 text-center" style="width:20px"></i> Sơ đồ phòng
             </a>
-            <a href="#" class="nav-link" onclick="switchView('bookings', this)">
+            <a href="{{ route('booking.manage-booking') }}"
+                class="nav-link {{ request()->routeIs('booking.manage-booking') ? 'active' : '' }}">
                 <i class="fas fa-calendar-check me-2 text-center" style="width:20px"></i> DS Đặt phòng
             </a>
-            <a href="{{ route('customer.manage-customer') }}" class="nav-link" onclick="switchView('customers', this)">
+            <a href="{{ route('customer.manage-customer') }}"
+                class="nav-link {{ request()->routeIs('customer.manage-customer') ? 'active' : '' }}">
                 <i class="fas fa-users me-2 text-center" style="width:20px"></i> Khách hàng
             </a>
 
             <!-- MANAGER SECTION -->
-            <div class="nav-header mt-2">Quản Trị (Manager)</div>
-            <a href="{{ route('room.manage-room') }}" class="nav-link">
-                <i class="fas fa-bed me-2 text-center" style="width:20px"></i> Quản lý Phòng
-            </a>
-            <!-- MỚI THÊM: Quản lý loại phòng -->
-            <a href="{{ route('room.manage-type-room') }}" class="nav-link">
-                <i class="fas fa-shapes me-2 text-center" style="width:20px"></i> QL Loại phòng
-            </a>
-            <a href="{{ route('room.manage-services') }}" class="nav-link">
-                <i class="fas fa-coffee me-2 text-center" style="width:20px"></i> Quản lý Dịch vụ
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-user-cog me-2 text-center" style="width:20px"></i> Nhân viên
-            </a>
+            @if (auth()->check() && auth()->user()->role === \App\Models\User::ROLE_MANAGER)
+                <div class="nav-header mt-2">Quản Trị (Manager)</div>
+                <a href="{{ route('room.manage-room') }}"
+                    class="nav-link {{ request()->routeIs('room.manage-room') ? 'active' : '' }}">
+                    <i class="fas fa-bed me-2 text-center" style="width:20px"></i> Quản lý Phòng
+                </a>
+                <!-- MỚI THÊM: Quản lý loại phòng -->
+                <a href="{{ route('room.manage-type-room') }}"
+                    class="nav-link {{ request()->routeIs('room.manage-type-room') ? 'active' : '' }}">
+                    <i class="fas fa-shapes me-2 text-center" style="width:20px"></i> QL Loại phòng
+                </a>
+                <a href="{{ route('room.manage-services') }}"
+                    class="nav-link {{ request()->routeIs('room.manage-services') ? 'active' : '' }}">
+                    <i class="fas fa-coffee me-2 text-center" style="width:20px"></i> Quản lý Dịch vụ
+                </a>
+                <a href="{{ route('room.manage-staff') }}"
+                    class="nav-link {{ request()->routeIs('room.manage-staff') ? 'active' : '' }}">
+                    <i class="fas fa-user-cog me-2 text-center" style="width:20px"></i> Nhân viên
+                </a>
+            @endif
         </nav>
 
         <div class="p-3">
             <form action="/logout" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-danger w-100 btn-sm"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                <button type="submit" class="btn btn-danger w-100 btn-sm"><i class="fas fa-sign-out-alt"></i> Đăng
+                    xuất</button>
             </form>
             {{-- <a href="/logout" class="btn btn-danger w-100 btn-sm"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a> --}}
         </div>
@@ -244,6 +256,27 @@
         function openModal(id) {
             var myModal = new bootstrap.Modal(document.getElementById(id));
             myModal.show();
+        }
+
+        function confirmCheckin(id_booking) {
+            if (!confirm("Bạn có chắc muốn nhận phòng cho đơn này không?")) {
+                return;
+            }
+
+            const form = document.getElementById("confirmCheckinForm");
+            form.action = `/booking/check-in/confirm-checkin/${id_booking}`;
+            // console.log(form);
+            // alert('1')
+            form.submit();
+        }
+
+        function rejectCheckin(id_booking) {
+            if (!confirm("Bạn có chắc muốn hủy phòng cho đơn này không?")) {
+                return;
+            }
+            const form = document.getElementById('rejectCheckinForm')
+            form.action = `/booking/check-in/reject-checkin/${id_booking}`;
+            form.submit();
         }
     </script>
 

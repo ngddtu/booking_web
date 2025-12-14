@@ -80,17 +80,18 @@ class Room extends Model
     {
         // Bắt đầu query builder từ Room
         $query = self::query()
-            ->with(['roomType:id,name,initial_hour_rate,overnight_rate,daily_rate'])
+            ->with('roomType')
             ->with([
                 'activeBooking' => function ($q) {
-                    $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out', 'status');
+                    $q->select('id', 'room_id', 'customer_id', 'status', 'total_price', 'check_in', 'check_out', 'status', 'rent_type');
                 },
                 'activeBooking.customer' => function ($q) {
                     $q->select('id', 'name', 'phone', 'address');
                 },
                 'activeBooking.booking_service.service' => function ($q) {
-                    $q->select('id' ,'name', 'price');
-                }
+                    $q->select('id', 'name', 'price');
+                },
+                'activeBookings'
             ]);
 
         // filters: ví dụ room_number, status, type_room_id
@@ -113,9 +114,9 @@ class Room extends Model
     {
         if (!$this->activeBooking) return 0;
 
-        return $this->activeBooking->booking_service->sum(function($bs) {
-        return $bs->quantity * $bs->service->price;
-    });
+        return $this->activeBooking->booking_service->sum(function ($bs) {
+            return $bs->quantity * $bs->service->price;
+        });
     }
 
     //lấy ra tổng tiền
@@ -136,6 +137,14 @@ class Room extends Model
         ]);
     }
 
+    // public function primaryActiveBooking()
+    // {
+    //     return $this->hasOne(Booking::class, 'room_id')
+    //         ->where('status', 'confirmed')
+    //         ->orderBy('check_in'); // booking tới sớm nhất
+    // }
+
+
     public function roomType()
     {
         return $this->belongsTo(TypeRoom::class, 'room_type_id');
@@ -148,6 +157,14 @@ class Room extends Model
 
     public function activeBooking()
     {
-        return $this->hasOne(Booking::class, 'room_id')->whereIn('status', ['confirmed', 'pending']);
+        return $this->hasOne(Booking::class, 'room_id')->whereIn('status', ['confirmed']);
     }
+
+    public function activeBookings()
+{
+    return $this->hasMany(Booking::class, 'room_id')
+        ->whereIn('status', ['pending'])
+        ->orderBy('check_in', 'asc');
+}
+
 }

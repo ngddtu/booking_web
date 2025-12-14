@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('room_id')->constrained('rooms')->onDelete('restrict');
             $table->date('check_in');
             $table->date('check_out');
-            $table->decimal('total_price', 10, 2)->default(0);
+            $table->decimal('total_price', 10, 2)->nullable()->default(0);
             $table->enum('status', ['pending','confirmed','canceled','completed'])->default('pending');
             $table->timestamps();
         });
