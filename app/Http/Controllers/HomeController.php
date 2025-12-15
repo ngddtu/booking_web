@@ -9,7 +9,7 @@ class HomeController extends Controller
     public function index()
     {
         if(auth()->check()){
-            return view('admins.dashboard');
+            return redirect('/dashboard');
         } else {
             return redirect('/login');
         }

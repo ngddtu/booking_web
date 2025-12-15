@@ -123,12 +123,21 @@ class RoomController extends Controller
 
     public function manage_reserve(Request $request)
     {
+        
         $rooms = $this->room->listWithActiveBooking($request->all());
         $services = $this->service->getServiceAttribute();
-        // dd($services);
+        $status = [
+            'total' => $this->room->count(),
+            'available' => $this->room->where('status', 'available')->count(),
+            'disbale' => $this->room->where('status', 'disbale')->count(),
+            'occupied' => $this->room->where('status', 'occupied')->count(),
+            'maintenace' => $this->room->where('status', 'maintenace')->count(),
+            'cleaning' => $this->room->where('status', 'cleaning')->count(),
+        ];
+        // dd($status);
         // dd($rooms);
         // dd($rooms[3]->activeBooking->booking_service->map(fn($bs)=> $bs->service->name));
-        return view('saler.manage-booking', compact('rooms', 'services'));
+        return view('saler.manage-booking', compact('rooms', 'services', 'status'));
     }
 
 

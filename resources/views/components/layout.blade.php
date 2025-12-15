@@ -147,9 +147,8 @@
         <nav class="nav flex-column p-2 flex-grow-1">
 
             <!-- Dashboard -->
-            <a href="{{ route('room.manage-room') }}"
-                class="nav-link {{ request()->routeIs('room.manage-room') ? 'active' : '' }}"
-                onclick="switchView('dashboard', this)">
+            <a href="{{ route('dashboard') }}"
+                class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-tachometer-alt me-2 text-center" style="width:20px"></i> Tổng quan
             </a>
 

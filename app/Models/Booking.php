@@ -25,7 +25,7 @@ class Booking extends Model
 
     public function getListBookings()
     {
-        $query = $this->newQuery()->with(['customer', 'room']);
+        $query = $this->newQuery()->with(['customer', 'room.roomType']);
         $bookings = $query->orderBy('id', 'desc')->paginate(8)->withQueryString();
         return $bookings;
     }

@@ -31,7 +31,7 @@ class BookingController extends Controller
     {
         $bookings = $this->booking->getListBookings();
         // dd($bookings);
-        return view('saler.manage-booking-list', compact( 'bookings'));
+        return view('saler.manage-booking-list', compact('bookings'));
     }
 
     public function checkIn(Booking $booking)
@@ -274,7 +274,7 @@ class BookingController extends Controller
         return redirect()->back()->with('success', 'Hoàn tất dọn dẹp. Phòng đã sẵn sàng.');
     }
 
-    public function update(Request $request, Booking $booking)
+    public function updateStatus(Request $request, Booking $booking)
     {
         // dd($booking);
         $booking->update(['status' => 'confirmed']);
@@ -292,5 +292,26 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Không thể hủy booking!');
         }
+    }
+
+    public function update(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'check_in' => 'nullable|date',
+            'check_out' => 'nullable|date|after:check_in',
+            'rent_type' => 'nullable|string',
+            'total_price' => 'nullable|numeric',
+            'note' => 'nullable|string',
+        ]);
+
+        $booking->update($request->only([
+            'check_in',
+            'check_out',
+            'rent_type',
+            'total_price',
+            'note',
+        ]));
+
+        return back()->with('success', 'Cập nhật booking thành công!');
     }
 }

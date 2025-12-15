@@ -8,12 +8,20 @@
             <h5 class="mb-0 fw-bold text-primary">
                 <i class="fas fa-calendar-check me-2"></i>Danh sách Booking
             </h5>
-
-            {{-- <a href="{{ route('bookings.create') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus-circle me-1"></i> Tạo Booking
-        </a> --}}
         </div>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                <i class="fas fa-times-circle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
         <div class="card-body">
             <div class="row g-2 mb-3">
                 <div class="col-md-4">
@@ -57,6 +65,7 @@
                             <th>Phòng</th>
                             <th>Check-in</th>
                             <th>Check-out</th>
+                            <th>Ghi chú</th>
                             <th>Hình thức</th>
                             <th>Trạng thái</th>
                             <th class="text-end">Hành động</th>
@@ -84,6 +93,7 @@
                                     {{ $booking->check_out ? \Carbon\Carbon::parse($booking->check_out)->format('d/m/Y H:i') : '-' }}
                                 </td>
 
+                                <td>{{ $booking->note ?? 'Không có' }}</td>
                                 <td>{{ ucfirst($booking->rent_type) }}</td>
 
                                 <td>
@@ -103,20 +113,34 @@
                                 </td>
 
                                 <td class="text-end">
+                                    {{-- NÚT XEM: luôn có --}}
                                     <button class="btn btn-sm btn-info"
                                         onclick="openViewBookingModal({{ $booking->id }})">
                                         <i class="fas fa-eye"></i>
                                     </button>
 
-                                    <button class="btn btn-sm btn-warning"
-                                        onclick="openEditBookingModal({{ $booking->id }})">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                    {{-- PENDING: được sửa + xóa --}}
+                                    @if ($booking->status === 'pending')
+                                        <button class="btn btn-sm btn-warning"
+                                            onclick="openEditBookingModal({{ $booking->id }})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
 
-                                    <button class="btn btn-sm btn-danger" onclick="rejectCheckin({{ $booking->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectCheckin({{ $booking->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                        {{-- CONFIRMED: chỉ sửa --}}
+                                    @elseif ($booking->status === 'confirmed')
+                                        <button class="btn btn-sm btn-warning"
+                                            onclick="openEditBookingModal({{ $booking->id }})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+
+                                        {{-- COMPLETED: chỉ xem --}}
+                                    @endif
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
@@ -295,7 +319,6 @@
             modal.show();
         }
         const bookings = @json($bookings->keyBy('id'));
-        console.log(bookings[1]);
 
 
         function openViewBookingModal(id) {
@@ -315,11 +338,11 @@
 
 
 
-        function openEditBookingModal(id) {
-            // document.getElementById('editBookingForm').action =
-            //     updateUrlTemplate.replace(':id', booking.id);
-
-            const booking = bookings[id];
+        function openEditBookingModal(boking) {
+            const form = document.getElementById('editBookingForm');
+            form.action = `/booking/check-in/update/${boking}`
+            const booking = bookings[boking];
+            console.log(booking);
 
             document.getElementById('edit_check_in').value = booking.check_in.replace(' ', 'T');
             document.getElementById('edit_check_out').value =
@@ -327,8 +350,75 @@
             document.getElementById('edit_rent_type').value = booking.rent_type;
             document.getElementById('edit_total_price').value = Number(booking.total_price).toLocaleString();
             document.getElementById('edit_note').value = booking.note ?? '';
+            // Lấy các field
+            const checkIn = document.getElementById('edit_check_in');
+            const checkOut = document.getElementById('edit_check_out');
+            const rentType = document.getElementById('edit_rent_type');
+            const price = document.getElementById('edit_total_price');
+            const note = document.getElementById('edit_note');
+
+            // Set dữ liệu
+            checkIn.value = booking.check_in.replace(' ', 'T');
+            checkOut.value = booking.check_out ? booking.check_out.replace(' ', 'T') : '';
+            rentType.value = booking.rent_type;
+            price.value = booking.total_price;
+            note.value = booking.note ?? '';
+
+            // Reset disabled
+            checkIn.disabled = false;
+            checkOut.disabled = false;
+            rentType.disabled = false;
+            price.disabled = false;
+            note.disabled = false;
+
+            // 🔒 Nếu CONFIRMED → chỉ sửa note
+            if (booking.status === 'confirmed') {
+                checkIn.disabled = true;
+                checkOut.disabled = true;
+                rentType.disabled = true;
+                price.disabled = true;
+            } else {
+                // 🔥 Gắn listener tính tiền
+                checkIn.onchange = () => calculatePrice(booking);
+                checkOut.onchange = () => calculatePrice(booking);
+                rentType.onchange = () => calculatePrice(booking);
+            }
 
             new bootstrap.Modal(document.getElementById('editBookingModal')).show();
+        }
+
+        function calculatePrice(booking) {
+            const checkIn = document.getElementById('edit_check_in').value;
+            const checkOut = document.getElementById('edit_check_out').value;
+            const rentType = document.getElementById('edit_rent_type').value;
+
+            if (!checkIn || !checkOut) return;
+
+            const start = new Date(checkIn);
+            const end = new Date(checkOut);
+
+            let diffHours = Math.ceil((end - start) / (1000 * 60 * 60));
+            if (diffHours <= 0) return;
+
+            const typeRoom = booking.room.room_type;
+            let price = 0;
+
+            switch (rentType) {
+                case 'hourly':
+                    price = diffHours * Number(typeRoom.initial_hour_rate);
+                    break;
+
+                case 'overnight':
+                    price = Number(typeRoom.overnight_rate);
+                    break;
+
+                case 'daily':
+                    const days = Math.ceil(diffHours / 24);
+                    price = days * Number(typeRoom.daily_rate);
+                    break;
+            }
+
+            document.getElementById('edit_total_price').value = price;
         }
 
 

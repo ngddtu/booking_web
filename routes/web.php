@@ -24,6 +24,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 
 
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
 Route::middleware(['auth', 'role:manager'])->prefix('room')->name('room.')->group(function () {
     Route::get('manage-room', [RoomController::class, 'index'])->name('manage-room');
     //lọc phòng
@@ -83,12 +85,12 @@ Route::middleware(['auth', 'role:saler'])->group(function () {
         
 
 
-
+        Route::put('check-in/update/{booking}',[BookingController::class, 'update'])->name('check-in.update');
         //Cập nhật trạng thái booking
-        Route::post('check-in/confirm-checkin/{booking}', [BookingController::class, 'update'])->name('check-in.confirm-checkin');
+        Route::post('check-in/confirm-checkin/{booking}', [BookingController::class, 'updateStatus'])->name('check-in.confirm-checkin');
         //Xóa booking
         Route::delete('check-in/reject-checkin/{booking}', [BookingController::class, 'destroy']);
-
+        
         // Route::post('maintenance/{room}', [BookingController::class, 'setMaintenance'])->name('maintenance');
         // Route::post('maintenance/finish/{room}', [BookingController::class, 'finishMaintenance'])->name('maintenance.finish');
         Route::post('cleaning/finish/{room}', [BookingController::class, 'finishCleaning'])->name('cleaning.finish');

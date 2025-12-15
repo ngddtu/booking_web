@@ -27,7 +27,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect('/');
         } else {
-            return redirect('/login')->with('error','Invalid login.');
+            return redirect('/login')->with('error','Sai tài khoản hoặc mật khẩu!');
         }
     }
 

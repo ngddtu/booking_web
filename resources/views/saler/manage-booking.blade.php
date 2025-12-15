@@ -30,8 +30,8 @@
                         </div>
                         <div>
                             <div class="small text-muted fw-bold">Sẵn sàng đón</div>
-                            <h4 class="mb-0 fw-bold text-dark">10 <span class="text-muted fs-6 font-weight-normal">/
-                                    20</span></h4>
+                            <h4 class="mb-0 fw-bold text-dark">{{ $status['available'] }}<span class="text-muted fs-6 font-weight-normal">/
+                                    {{ $status['total'] }}</span></h4>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         </div>
                         <div>
                             <div class="small text-muted fw-bold">Đang có khách</div>
-                            <h4 class="mb-0 fw-bold text-dark">8</h4>
+                            <h4 class="mb-0 fw-bold text-dark">{{ $status['occupied'] }}</h4>
                         </div>
                     </div>
                 </div>
@@ -57,12 +57,12 @@
                         </div>
                         <div>
                             <div class="small text-muted fw-bold">Cần dọn dẹp</div>
-                            <h4 class="mb-0 fw-bold text-dark">1</h4>
+                            <h4 class="mb-0 fw-bold text-dark">{{ $status['cleaning'] }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-6">
+            {{-- <div class="col-md-3 col-6">
                 <div class="card border-0 shadow-sm bg-white">
                     <div class="card-body p-2 d-flex align-items-center">
                         <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- 2. THANH CÔNG CỤ TÌM KIẾM & LỌC (ADVANCED FILTER) -->

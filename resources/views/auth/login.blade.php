@@ -77,6 +77,13 @@
                     </div>
                 </div>
             @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                    <i class="fas fa-times-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
             <form method="POST" action="/login">
                 @csrf
                 <div class="mb-3">
@@ -119,8 +126,8 @@
 
         </div>
         <div class="card-footer bg-white text-center py-3 border-top-0">
-            <small class="text-muted">Chưa có tài khoản? <a href="/register"
-                    class="fw-bold text-decoration-none">Đăng ký ngay</a></small>
+            <small class="text-muted">Chưa có tài khoản? <a href="/register" class="fw-bold text-decoration-none">Đăng
+                    ký ngay</a></small>
         </div>
     </div>
 

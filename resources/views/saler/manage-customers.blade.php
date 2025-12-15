@@ -40,7 +40,19 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+            <i class="fas fa-times-circle me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
     <!-- 2. Bảng dữ liệu khách hàng -->
     <div class="card shadow-sm">
         <div class="card-header bg-white py-3">
@@ -70,7 +82,7 @@
                         <i class="fas fa-user-plus"></i> Thêm khách mới
                     </button>
                     <!-- <button class="btn btn-outline-secondary btn-sm" title="Xuất Excel"><i
-                                class="fas fa-file-export"></i></button> -->
+                                            class="fas fa-file-export"></i></button> -->
                 </div>
             </div>
         </div>
@@ -84,7 +96,7 @@
                             <th>Liên hệ / CCCD</th>
                             <th>Nhóm khách</th>
                             <th>Lịch sử</th>
-                            <th>Trạng thái</th>
+                            <th>Ghi chú</th>
                             <th class="text-end pe-3">Thao tác</th>
                         </tr>
                     </thead>
@@ -124,10 +136,11 @@
                                         {{ number_format($customer->bookings_sum_total_price) }}</small>
                                 </td>
                                 <td>
-                                    @if ($customer->status == 'active')
-                                        <span class="badge bg-success bg-opacity-10 text-success">Hoạt động</span>
+                                    @if ($customer->note)
+                                        <span
+                                            class="badge bg-success bg-opacity-10 text-danger">{{ $customer->note }}</span>
                                     @else
-                                        <span class="badge bg-danger">Đang khóa</span>
+                                        <span class="badge bg-danger">Không có</span>
                                     @endif
                                 </td>
                                 <td class="text-end pe-3">
