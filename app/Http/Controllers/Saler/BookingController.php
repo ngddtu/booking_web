@@ -151,15 +151,34 @@ class BookingController extends Controller
         $request->validate([
             'room_id'     => 'required|exists:rooms,id',
             'check_in'    => 'required|date',
+            'check_out'    => 'required|date',
             'name'        => 'required|string',
             'phone'       => 'nullable|string',
             'customer_id' => 'nullable|exists:customers,id',
         ]);
 
+        $checkIn  = Carbon::parse($request->check_in);
+        $checkOut = $request->check_out
+            ? Carbon::parse($request->check_out)
+            : $checkIn->copy()->addDay(); // fallback nếu chưa có checkout
+
+        $hasOverlap = Booking::where('room_id', $request->room_id)
+            ->whereIn('status', ['pending', 'confirmed']) // bỏ cancelled
+            ->where(function ($q) use ($checkIn, $checkOut) {
+                $q->where('check_in', '<', $checkOut)
+                    ->where('check_out', '>', $checkIn);
+            })
+            ->exists();
+
+        if ($hasOverlap) {
+            return back()->with('error', 'Phòng đã có booking trong khoảng thời gian này!');
+        }
+
+
+
         DB::beginTransaction();
 
         try {
-
             // ----------------------------------------------------
             // 1. Xử lý khách hàng
             // ----------------------------------------------------

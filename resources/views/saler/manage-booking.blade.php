@@ -307,7 +307,7 @@
                                                         <div class="col-md-4">
                                                             <label class="form-label small fw-bold">Giá phòng niêm
                                                                 yết</label>
-                                                            ame- <div class="input-group input-group-sm">
+                                                                <div class="input-group input-group-sm">
                                                                 <input type="text" id="roomListedPrice"
                                                                     class="form-control fw-bold text-dark" value="0"
                                                                     readonly name="total_price">

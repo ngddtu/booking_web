@@ -13,6 +13,7 @@ class StaffController extends Controller
     {
         // List only employees (ROLE_SALER)
         $staffs = User::where('role', User::ROLE_SALER)->orderBy('id', 'desc')->paginate(10);
+        // dd
         return view('admins.manage-staff', compact('staffs'));
     }
 
@@ -39,7 +40,7 @@ class StaffController extends Controller
     public function update(Request $request, User $user)
     {
         if ($user->role !== User::ROLE_SALER) {
-             return redirect()->back()->with('error', 'Không thể sửa tài khoản quản trị!');
+            return redirect()->back()->with('error', 'Không thể sửa tài khoản quản trị!');
         }
 
         $request->validate([
@@ -67,7 +68,7 @@ class StaffController extends Controller
     public function destroy(User $user)
     {
         if ($user->role !== User::ROLE_SALER) {
-             return redirect()->back()->with('error', 'Không thể xóa tài khoản quản trị!');
+            return redirect()->back()->with('error', 'Không thể xóa tài khoản quản trị!');
         }
         $user->delete();
         return redirect()->back()->with('success', 'Xóa nhân viên thành công!');

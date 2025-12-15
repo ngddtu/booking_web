@@ -15,8 +15,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập trang `/login`<br>2. Nhập email và mật khẩu hợp lệ<br>3. Nhấn nút Đăng nhập |
 | **Kết quả mong đợi** | Người dùng được chuyển hướng đến trang dashboard/trang chủ. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Đăng nhập thành công, hệ thống chuyển hướng đúng. |
+| **Hướng giải quyết** | Pass |
 
 ### TC002: Đăng nhập thất bại
 
@@ -29,8 +29,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập trang `/login`<br>2. Nhập email hoặc mật khẩu không hợp lệ<br>3. Nhấn nút Đăng nhập |
 | **Kết quả mong đợi** | Thông báo lỗi "Invalid login" hiển thị. Người dùng vẫn ở lại trang đăng nhập. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Hệ thống báo lỗi "Sai tài khoản hoặc mật khẩu!", giữ nguyên trang. |
+| **Hướng giải quyết** | Pass |
 
 ### TC003: Đăng ký thành công
 
@@ -43,8 +43,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/register`<br>2. Nhập chính xác Tên, Email, SĐT, Mật khẩu và Xác nhận mật khẩu<br>3. Nhấn nút Đăng ký |
 | **Kết quả mong đợi** | Người dùng được chuyển hướng đến trang đăng nhập (hoặc tự động đăng nhập). |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Đăng ký thành công, chuyển hướng về trang login. |
+| **Hướng giải quyết** | Pass |
 
 ### TC004: Đăng ký - Kiểm tra dữ liệu (Validation)
 
@@ -57,8 +57,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/register`<br>2. Nhập địa chỉ email đã tồn tại trong hệ thống<br>3. Nhấn nút Đăng ký |
 | **Kết quả mong đợi** | Thông báo lỗi "The email has already been taken" được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Hệ thống báo lỗi email đã tồn tại. |
+| **Hướng giải quyết** | Pass |
 
 ### TC005: Đăng xuất
 
@@ -71,8 +71,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Nhấn nút/link Đăng xuất (Logout) |
 | **Kết quả mong đợi** | Người dùng bị đăng xuất và chuyển hướng về trang đăng nhập với thông báo thành công. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Đăng xuất thành công, chuyển hướng về login. |
+| **Hướng giải quyết** | Pass |
 
 ## 2. Quản lý Loại phòng (Room Type Management)
 
@@ -87,8 +87,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/room/manage-type-room` |
 | **Kết quả mong đợi** | Danh sách các loại phòng hiện có được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Danh sách hiển thị đầy đủ. |
+| **Hướng giải quyết** | Pass |
 
 ### TC007: Thêm loại phòng thành công
 
@@ -101,8 +101,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/room/manage-type-room`<br>2. Điền Tên loại phòng, Giá, Mô tả<br>3. Gửi form (Lưu/Thêm) |
 | **Kết quả mong đợi** | Loại phòng mới được thêm và hiển thị trong danh sách. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Thêm loại phòng thành công. |
+| **Hướng giải quyết** | Pass |
 
 ### TC008: Cập nhật loại phòng
 
@@ -115,8 +115,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Chọn một loại phòng để sửa<br>2. Thay đổi Tên hoặc Giá<br>3. Gửi cập nhật |
 | **Kết quả mong đợi** | Thông tin loại phòng được cập nhật thành công. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Cập nhật thành công. |
+| **Hướng giải quyết** | Pass |
 
 ### TC009: Lọc/Tìm kiếm loại phòng
 
@@ -129,8 +129,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Sử dụng form tìm kiếm trên trang `/room/manage-type-room`<br>2. Nhập tiêu chí tìm kiếm<br>3. Nhấn Tìm kiếm |
 | **Kết quả mong đợi** | Danh sách chỉ hiển thị các loại phòng khớp với tiêu chí. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Lọc theo tên và số người hoạt động đúng. |
+| **Hướng giải quyết** | Pass |
 
 ## 3. Quản lý Phòng (Room Management)
 
@@ -145,8 +145,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/room/manage-room` |
 | **Kết quả mong đợi** | Danh sách các phòng được hiển thị cùng trạng thái và loại phòng. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Danh sách phòng hiển thị đúng trạng thái. |
+| **Hướng giải quyết** | Pass |
 
 ### TC011: Thêm phòng mới
 
@@ -159,8 +159,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/room/manage-room`<br>2. Nhấn Thêm phòng<br>3. Nhập Tên/Số phòng, Chọn Loại phòng<br>4. Gửi form |
 | **Kết quả mong đợi** | Phòng mới được tạo và xuất hiện trong danh sách. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Thêm phòng mới thành công. |
+| **Hướng giải quyết** | Pass |
 
 ### TC012: Cập nhật phòng
 
@@ -173,8 +173,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Chọn một phòng để sửa<br>2. Thay đổi thông tin (VD: Trạng thái, Loại phòng)<br>3. Gửi form |
 | **Kết quả mong đợi** | Thông tin phòng được cập nhật. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Cập nhật phòng thành công. |
+| **Hướng giải quyết** | Pass |
 
 ## 4. Quản lý Dịch vụ (Service Management)
 
@@ -189,8 +189,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/room/manage-services` |
 | **Kết quả mong đợi** | Danh sách các dịch vụ khả dụng được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Hiển thị đúng danh sách dịch vụ. |
+| **Hướng giải quyết** | Pass |
 
 ### TC015: Thêm dịch vụ
 
@@ -203,8 +203,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Nhập Tên dịch vụ và Giá<br>2. Gửi form |
 | **Kết quả mong đợi** | Dịch vụ mới được thêm vào hệ thống. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Thêm dịch vụ mới thành công. |
+| **Hướng giải quyết** | Pass |
 
 ### TC017: Xóa dịch vụ
 
@@ -217,8 +217,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Nhấn Xóa trên một dịch vụ |
 | **Kết quả mong đợi** | Dịch vụ bị xóa khỏi danh sách. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Xóa dịch vụ thành công. |
+| **Hướng giải quyết** | Pass |
 
 ## 5. Quản lý Khách hàng (Customer Management)
 
@@ -233,8 +233,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/customer/manage-customer` |
 | **Kết quả mong đợi** | Danh sách khách hàng được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Hiển thị danh sách khách hàng đúng. |
+| **Hướng giải quyết** | Pass |
 
 ### TC019: Tìm kiếm khách hàng
 
@@ -247,8 +247,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Tìm kiếm khách hàng bằng tên hoặc số điện thoại<br>2. Nhấn Tìm kiếm |
 | **Kết quả mong đợi** | Hồ sơ khách hàng chính xác được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Thất bại: Chỉ tìm được theo SĐT, không tìm được theo Tên. |
+| **Hướng giải quyết** | Cập nhật Customer Model scopeFilter để tìm theo cả tên và phone. |
 
 ## 6. Đặt phòng (Booking & Reservation)
 
@@ -263,8 +263,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/booking/manage-booking` |
 | **Kết quả mong đợi** | Danh sách tất cả các booking được hiển thị. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Hiển thị danh sách booking đúng. |
+| **Hướng giải quyết** | Pass |
 
 ### TC021: Tạo đặt phòng (Reservation)
 
@@ -277,8 +277,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Truy cập `/reserve/reserves`<br>2. Chọn Phòng, Khách hàng, Ngày tháng<br>3. Xác nhận đặt phòng |
 | **Kết quả mong đợi** | Booking được tạo và trạng thái phòng được cập nhật. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Tạo booking thành công, phòng chuyển trạng thái occupied. |
+| **Hướng giải quyết** | Pass |
 
 ### TC022: Cập nhật dịch vụ cho Booking
 
@@ -291,8 +291,8 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Chọn một booking<br>2. Thêm/Cập nhật các dịch vụ đã sử dụng<br>3. Lưu lại |
 | **Kết quả mong đợi** | Tổng tiền booking được cập nhật phản ánh phí dịch vụ. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Thất bại: Dịch vụ thêm thành công nhưng Tổng tiền chưa cập nhật ngay. |
+| **Hướng giải quyết** | Cập nhật logic để tính toán lại total_price khi thay đổi dịch vụ. |
 
 ## 7. Bảo mật (Security)
 
@@ -307,5 +307,5 @@ Tài liệu này mô tả chi tiết các test case cho dự án Booking System,
 | **Kỹ thuật test** | Trực tiếp trên chương trình |
 | **Các bước thực hiện** | 1. Cố gắng truy cập `/room/manage-room` |
 | **Kết quả mong đợi** | Người dùng bị chuyển hướng về `/login`. |
-| **Kết quả thực tế** | |
-| **Hướng giải quyết** | |
+| **Kết quả thực tế** | Chuyển hướng về trang login khi chưa auth. |
+| **Hướng giải quyết** | Pass |
